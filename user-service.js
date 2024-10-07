@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
   shoppingCart: [
     {
       product: {
-        _id: Number, // Store the product ID
+        id: Number, // Store the product ID
         title: String,
         title_En: String,
         price: Number,
