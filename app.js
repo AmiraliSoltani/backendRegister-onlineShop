@@ -1,11 +1,9 @@
-
-
-
 require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const MongoStore = require('connect-mongo');
 const session = require("express-session");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -98,7 +96,7 @@ app.get("/login/success", (req, res) => {
 });
 
 mongoose.connect(process.env.MONGODB_URI, {
-  useUnifiedTopology: true,
+  useNewUrlParser: true,
 });
 
 app.use(cors());
@@ -107,13 +105,29 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
+// app.use(
+//   session({
+//     secret: "Our little secret.",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       secure: true,
+//       sameSite: "none",
+//     },
+//   })
+// );
+
+
 app.use(
   session({
-    secret: "Our little secret.",
+    secret: process.env.SESSION_SECRET || 'Our little secret.',
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+    }),
     cookie: {
-      secure: true,
+      secure: true, // Ensure this is false in development
       sameSite: "none",
     },
   })
