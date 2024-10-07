@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Successful</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .success-message {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: green;
+    }
+    .close-btn {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .close-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="success-message">
+    Login Successful!
+  </div>
+  <button class="close-btn" onclick="closeWindow()">Close Window</button>
+
+  <script>
+    function closeWindow() {
+      window.close(); // Close the current window/tab
+    }
+  </script>
+</body>
+</html>
