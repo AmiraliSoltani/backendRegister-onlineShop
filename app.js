@@ -8,11 +8,25 @@ const session = require("express-session");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const findOrCreate = require("mongoose-findorcreate");
-const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const passportJWT = require("passport-jwt");
 const userService = require("./user-service.js");
 const { OAuth2Client } = require("google-auth-library");
+
+const cors = require("cors");
+const app = express();
+
+// CORS options for Express
+const corsOptions = {
+  origin: "*", // Replace with your React app's URL
+  credentials: true, // Allows cookies and credentials
+  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Authorization", "Content-Type"]
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Enable preflight requests for all routes
+
 
 const router = express.Router();
 
@@ -21,7 +35,7 @@ const client = new OAuth2Client(CLIENT_ID);
 
 let ExtractJwt = passportJWT.ExtractJwt;
 let JwtStrategy = passportJWT.Strategy;
-const app = express();
+
 
 // Configure its options
 let jwtOptions = {};
