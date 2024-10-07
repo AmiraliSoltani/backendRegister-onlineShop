@@ -95,9 +95,7 @@ app.get("/login/success", (req, res) => {
   res.send("Login successful! Token: " + req.query.token);
 });
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-});
+mongoose.connect(process.env.MONGODB_URI);
 
 app.use(cors());
 app.use(express.static("public"));
