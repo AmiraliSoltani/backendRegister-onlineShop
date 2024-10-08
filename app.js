@@ -20,9 +20,9 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Enable preflight requests for all routes
 
 // Basic route to check if the backend is working
-app.get('/register', (req, res) => {
-  res.send("CORS is working, Hello World!");
-});
+// app.get('/register', (req, res) => {
+//   res.send("CORS is working, Hello World!");
+// });
 
 // Start the server
 const PORT = process.env.PORT || 8080;
