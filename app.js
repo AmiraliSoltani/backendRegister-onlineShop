@@ -13,20 +13,21 @@ const passportJWT = require("passport-jwt");
 const userService = require("./user-service.js");
 const { OAuth2Client } = require("google-auth-library");
 
-const cors = require("cors");
 const app = express();
+
+const cors = require("cors");
 
 // CORS options for Express
 const corsOptions = {
-  origin: "*", // Replace with your React app's URL
-  credentials: true, // Allows cookies and credentials
+  origin: "http://localhost:3000", // Replace this with the URL of your React app
+  credentials: true, // Allows cookies and credentials to be passed
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
   allowedHeaders: ["Authorization", "Content-Type"]
 };
 
+// Use the CORS middleware in your Express app
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Enable preflight requests for all routes
-
+app.options("*", cors(corsOptions)); // Enable preflight requests for all routes
 
 const router = express.Router();
 
