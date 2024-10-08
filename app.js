@@ -19,8 +19,8 @@ const cors = require("cors");
 
 // CORS options for Express
 const corsOptions = {
-  origin: "http://localhost:3000", // Replace this with the URL of your React app
-  credentials: true, // Allows cookies and credentials to be passed
+  origin: "http://localhost:3000", // Replace with the exact URL of your React app
+  credentials: true, // Allows cookies and credentials
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
   allowedHeaders: ["Authorization", "Content-Type"]
 };
@@ -29,11 +29,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); // Enable preflight requests for all routes
 
-
 // Add CORS middleware to your Express app
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Credentials", true);
-  res.setHeader("Access-Control-Allow-Origin", "*"); // Or specify the exact origin if needed
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"); // Specify the exact origin
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET,OPTIONS,PATCH,DELETE,POST,PUT"
@@ -43,12 +42,12 @@ app.use((req, res, next) => {
     "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
   );
 
-  // If the request method is OPTIONS, send a 200 response (preflight request)
+  // Handle preflight requests
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }
 
-  // Pass to next layer of middleware
+  // Pass to the next middleware
   next();
 });
 
