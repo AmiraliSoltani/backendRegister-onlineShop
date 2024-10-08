@@ -1,7 +1,7 @@
 {
     "headers": [
       {
-        "source": "/(.*)", // Match all routes
+        "source": "/(.*)",
         "headers": [
           {
             "key": "Access-Control-Allow-Origin",
