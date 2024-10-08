@@ -1,34 +1,72 @@
-require("dotenv").config();
+//jshint esversion:6
+
 const express = require("express");
+const bodyParser = require("body-parser");
+const ejs = require("ejs");
 const mongoose = require("mongoose");
-const cors = require("cors");
 
 const app = express();
+const cors = require("cors"); // Add this line
 
-// CORS configuration
+app.use(cors()); // Enable CORS for all routes
 const corsOptions = {
-  origin: ["https://online-shop-bek1ig1ij-amiralisoltanis-projects.vercel.app", "http://localhost:3000"], // Your frontend URLs
-  credentials: true, // Allow credentials (cookies, headers, etc.)
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // HTTP methods
-  allowedHeaders: ["Authorization", "Content-Type"], // Allowed headers
+  origin: "*", // Replace with the origin of your React app
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // Enable cookies and authorization headers
 };
 
-// Apply CORS middleware to handle all routes
 app.use(cors(corsOptions));
+app.set("view engine", "ejs");
 
-// Ensure all preflight requests are responded to
-app.options('*', cors(corsOptions)); // Enable preflight requests for all routes
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+//app.use(express.static("public"));
 
-// Basic route to check if the backend is working
-// app.get('/register', (req, res) => {
-//   res.send("CORS is working, Hello World!");
+// mongoose.connect("mongodb://127.0.0.1:27017/onlineShop", {
+//   useNewUrlParser: true,
 // });
 
-// Start the server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+mongoose.connect(
+  "mongodb+srv://asoltani7:wXxeR5GlT4n4X6z1@cluster0.efuoscy.mongodb.net/onlineShop?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+  }
+);
+
+
+const path = require("path");
+
+// Assuming your index.html is in the same directory as your Node.js script
+const indexPath = path.join(__dirname, "index.html");
+
+app.get("/", function (req, res) {
+  //res.send("hi");
+  res.sendFile(indexPath);
 });
+
+
+
+const db = mongoose.connection;
+
+// Event listener for successful connection
+db.once("connected", () => {
+  console.log("Connected to MongoDB Atlas");
+});
+
+// Event listener for connection errors
+db.on("error", (err) => {
+  console.error(`MongoDB connection error: ${err}`);
+});
+
+const port = process.env.PORT || 3010;
+app.listen(port, function () {
+  console.log(`Server started on port ${port}`);
+});
+
+
 
 
 // require("dotenv").config();
