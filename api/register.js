@@ -3,8 +3,8 @@ const allowCors = fn => async (req, res) => {
 
   // Allow specific origins based on environment
   const allowedOrigins = [
-    'http://localhost:3000',  // Local development frontend
-    'https://online-shop-bek1ig1ij-amiralisoltanis-projects.vercel.app/'  // Replace with your Vercel frontend URL
+    'https://online-shop-six-iota.vercel.app/' , // Replace with your Vercel frontend URL
+    'http://localhost:3000' // Local development frontend
   ];
 
   if (allowedOrigins.includes(origin)) {
