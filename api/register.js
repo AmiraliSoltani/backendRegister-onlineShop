@@ -10,6 +10,9 @@ const allowCors = fn => async (req, res) => {
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin); // Allow specific origin
   }
+  else{
+    res.setHeader('Access-Control-Allow-Origin', origin); // Allow specific origin
+  }
 
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
