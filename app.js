@@ -19,10 +19,7 @@ const cors = require("cors");
 
 // CORS options for Express
 const corsOptions = {
-  origin: [
-    "https://online-shop-bek1ig1ij-amiralisoltanis-projects.vercel.app", // Add your Vercel frontend URL
-    "http://localhost:3000" // Keep this if you also want to allow local development
-  ],
+  origin: "https://online-shop-bek1ig1ij-amiralisoltanis-projects.vercel.app/", // Replace with the exact URL of your React app
   credentials: true, // Allows cookies and credentials
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
   allowedHeaders: ["Authorization", "Content-Type"]
