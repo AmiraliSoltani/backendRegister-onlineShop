@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const app = express();
 
-// Simple CORS setup to allow requests from your React app
+// CORS configuration
 const corsOptions = {
   origin: ["https://online-shop-bek1ig1ij-amiralisoltanis-projects.vercel.app", "http://localhost:3000"], // Your frontend URLs
   credentials: true, // Allow credentials (cookies, headers, etc.)
@@ -13,8 +13,11 @@ const corsOptions = {
   allowedHeaders: ["Authorization", "Content-Type"], // Allowed headers
 };
 
-// Apply the CORS middleware globally
+// Apply CORS middleware to handle all routes
 app.use(cors(corsOptions));
+
+// Ensure all preflight requests are responded to
+app.options('*', cors(corsOptions)); // Enable preflight requests for all routes
 
 // Basic route to check if the backend is working
 app.get('/register', (req, res) => {
