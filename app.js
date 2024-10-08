@@ -1,42 +1,31 @@
+require("dotenv").config();
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
-const cors = require("micro-cors")({
-  allowMethods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
-  allowHeaders: ["Authorization", "Content-Type"],
-  origin: "*", // Replace with the origin of your React app
-});
+const cors = require("cors");
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI, { useUnifiedTopology: true });
+const app = express();
 
-// Middleware
-app.use(cors); // Apply micro-cors
+// Simple CORS setup to allow requests from your React app
+const corsOptions = {
+  origin: ["https://online-shop-bek1ig1ij-amiralisoltanis-projects.vercel.app", "http://localhost:3000"], // Your frontend URLs
+  credentials: true, // Allow credentials (cookies, headers, etc.)
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // HTTP methods
+  allowedHeaders: ["Authorization", "Content-Type"], // Allowed headers
+};
 
-// Your existing routes and logic...
+// Apply the CORS middleware globally
+app.use(cors(corsOptions));
+
+// Basic route to check if the backend is working
 app.get('/register', (req, res) => {
-  res.send("Hello, World!");
-});
-
-// Handle CORS and preflight
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  res.setHeader("Access-Control-Allow-Origin", "*"); // Change this to your frontend origin in production
-  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");
-  res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
-  
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-  next();
+  res.send("CORS is working, Hello World!");
 });
 
 // Start the server
-app.listen(process.env.PORT || 8080, () => {
-  console.log("Server is running on port 8080");
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
-
 
 
 // require("dotenv").config();
