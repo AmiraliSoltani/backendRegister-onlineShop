@@ -1,28 +1,37 @@
 const allowCors = fn => async (req, res) => {
-    res.setHeader('Access-Control-Allow-Credentials', true)
-    res.setHeader('Access-Control-Allow-Origin', '*')  // Use specific domain in production
-    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    )
-    if (req.method === 'OPTIONS') {
-      res.status(200).end()
-      return
-    }
-    return await fn(req, res)
+  const origin = req.headers.origin;
+
+  // Allow specific origins based on environment
+  const allowedOrigins = [
+    'http://localhost:3000',  // Local development frontend
+    'https://online-shop-bek1ig1ij-amiralisoltanis-projects.vercel.app'  // Replace with your Vercel frontend URL
+  ];
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin); // Allow specific origin
   }
-  
-  const handler = async (req, res) => {
-    if (req.method === 'POST') {
-      // Handle your POST logic here
-      res.status(200).json({ message: 'Register API hit successfully!' })
-    } else {
-      res.status(405).json({ message: 'Method not allowed' })
-    }
+
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
   }
-  
-  module.exports = allowCors(handler)
+  return await fn(req, res);
+}
+
+const handler = async (req, res) => {
+  if (req.method === 'POST') {
+    res.status(200).json({ message: 'Register API hit successfully!' });
+  } else {
+    res.status(405).json({ message: 'Method not allowed' });
+  }
+}
+
+module.exports = allowCors(handler);
+
   
 
 
