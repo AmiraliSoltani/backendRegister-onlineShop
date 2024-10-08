@@ -1,21 +1,15 @@
 {
+    "version": 2,
     "builds": [
       {
-        "src": "app.js",
+        "src": "app.js", 
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
         "src": "/(.*)",
-        "headers": {
-          "Access-Control-Allow-Origin": "http://localhost:3000",  
-          "Access-Control-Allow-Methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-          "Access-Control-Allow-Headers": "Authorization, Content-Type",
-          "Access-Control-Allow-Credentials": "true" 
-        },
-        "continue": true
+        "dest": "/app.js"  
       }
     ]
   }
-  

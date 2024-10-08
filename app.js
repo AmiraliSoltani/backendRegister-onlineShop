@@ -29,6 +29,32 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); // Enable preflight requests for all routes
 
+
+// Add CORS middleware to your Express app
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Or specify the exact origin if needed
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
+
+  // If the request method is OPTIONS, send a 200 response (preflight request)
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+
+  // Pass to next layer of middleware
+  next();
+});
+
+
+
+
 const router = express.Router();
 
 const CLIENT_ID = process.env.CLIENT_ID; // Replace with your Google Client ID
