@@ -1,43 +1,37 @@
 {
     "version": 2,
-    "routes": [
+    "rewrites": [
       {
-        "src": "/api/register",
-        "dest": "/api/register.js"
+        "source": "/api/register",
+        "destination": "/api/register.js"
       },
       {
-        "src": "/api/login",
-        "dest": "/api/login.js"
+        "source": "/api/login",
+        "destination": "/api/login.js"
       },
       {
-        "src": "/api/lastSearches",
-        "dest": "/api/lastSearches.js"
+        "source": "/api/lastSearches",
+        "destination": "/api/lastSearches.js"
       },
       {
-        "src": "/api/replaceLastSearches",
-        "dest": "/api/replaceLastSearches.js"
+        "source": "/api/replaceLastSearches",
+        "destination": "/api/replaceLastSearches.js"
       },
       {
-        "src": "/api/shoppingCard",
-        "dest": "/api/shoppingCard.js"
+        "source": "/api/shoppingCard",
+        "destination": "/api/shoppingCard.js"
       },
       {
-        "src": "/api/lastVisited",
-        "dest": "/api/lastVisited.js"
+        "source": "/api/lastVisited",
+        "destination": "/api/lastVisited.js"
       },
       {
-        "src": "/api/replaceLastVisited",
-        "dest": "/api/replaceLastVisited.js"
+        "source": "/api/replaceLastVisited",
+        "destination": "/api/replaceLastVisited.js"
       },
       {
-        "src": "/api/favourites",
-        "dest": "/api/favourites.js"
-      }
-    ],
-    "builds": [
-      {
-        "src": "api/**/*.js",
-        "use": "@vercel/node"
+        "source": "/api/lastVisited/:id",
+        "destination": "/api/lastVisited/[id].js"
       }
     ]
   }
