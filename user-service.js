@@ -4,7 +4,6 @@ const bcrypt = require("bcryptjs");
 let mongoDBConnectionString = process.env.MONGODB_URI;
 
 
-const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
