@@ -28,6 +28,10 @@
       {
         "src": "/api/replaceLastVisited",
         "dest": "/api/replaceLastVisited.js"
+      },
+      {
+        "src": "/api/lastVisited/:id",
+        "dest": "/api/lastVisited/[id].js"
       }
     ],
     "builds": [
