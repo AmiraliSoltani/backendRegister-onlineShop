@@ -34,12 +34,6 @@
         "dest": "/api/favourites.js"
       }
     ],
-    "rewrites": [
-      {
-        "source": "/api/lastVisited/:id",
-        "destination": "/api/lastVisited/[id].js"
-      }
-    ],
     "builds": [
       {
         "src": "api/**/*.js",
