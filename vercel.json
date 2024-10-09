@@ -28,10 +28,12 @@
       {
         "src": "/api/replaceLastVisited",
         "dest": "/api/replaceLastVisited.js"
-      },
+      }
+    ],
+    "rewrites": [
       {
-        "src": "/api/lastVisited/(.*)",
-        "dest": "/api/lastVisited/[id].js"
+        "source": "/api/lastVisited/:id",
+        "destination": "/api/lastVisited/[id].js"
       }
     ],
     "builds": [
