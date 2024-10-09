@@ -73,12 +73,13 @@ const handler = async (req, res) => {
   const productId = req.query.id; // Extract dynamic ID from the URL
   console.log("userId",userId)
   console.log("productId",productId)
-  
+
   console.log("req.query",req.query)
 
   // Handle PUT requests to add last visited product
   if (req.method === 'PUT') {
     try {
+        
       const body = await parseBody(req); // Parse request body for additional data if needed
       
       const updatedVisited = await userService.addLastVisited(userId, productId);
