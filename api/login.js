@@ -11,6 +11,8 @@ async function parseBody(req) {
 }
 
 const allowCors = fn => async (req, res) => {
+    console.log("logggggggggggggggggggg");
+
   const origin = req.headers.origin;
 
   // Allow specific origins based on environment
