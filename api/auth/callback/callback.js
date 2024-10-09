@@ -36,7 +36,7 @@ const handler = async (req, res) => {
 
     // Exchange authorization code for access token using Google's API
     const { OAuth2Client } = require("google-auth-library");
-    const client = new OAuth2Client(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.CALLBACK_URL);
+    const client = new OAuth2Client(process.env.CLIENT_ID, process.env.CLIENT_SECRET, "https://backend-register-online-shop.vercel.app/auth/google/callback");
 
     const { tokens } = await client.getToken(code); // Fetch tokens (including access token) from Google
     client.setCredentials(tokens);
