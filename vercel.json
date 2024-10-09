@@ -30,7 +30,7 @@
         "dest": "/api/replaceLastVisited.js"
       },
       {
-        "src": "/api/lastVisited/:id",
+        "src": "/api/lastVisited/(.*)",
         "dest": "/api/lastVisited/[id].js"
       }
     ],
