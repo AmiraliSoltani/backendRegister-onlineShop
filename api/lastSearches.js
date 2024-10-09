@@ -55,6 +55,7 @@ const handler = async (req, res) => {
   if (req.method === 'PUT') {
     const body = await parseBody(req);
     const authHeader = req.headers.authorization;
+    await userService.connectMongo();
 
     if (!authHeader || !authHeader.startsWith('JWT ')) {
       return res.status(401).json({ message: 'Missing or invalid token' });
@@ -62,6 +63,7 @@ const handler = async (req, res) => {
 
     const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token);
+    console.log("decoded",decoded);
 
     if (!decoded) {
       return res.status(401).json({ message: 'Invalid token' });
