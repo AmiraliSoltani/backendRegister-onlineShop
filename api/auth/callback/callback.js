@@ -1,6 +1,5 @@
-// api/auth/callback.js
-const passport = require("passport");
 const jwt = require("jsonwebtoken");
+const userService = require("../../user-service");
 
 // Middleware for handling CORS
 const allowCors = fn => async (req, res) => {
@@ -11,8 +10,6 @@ const allowCors = fn => async (req, res) => {
   ];
 
 //   if (allowedOrigins.includes(origin)) {
-//     res.setHeader('Access-Control-Allow-Origin', origin);
-//   } else {
 //     res.setHeader('Access-Control-Allow-Origin', origin);
 //   }
 
@@ -28,14 +25,40 @@ const allowCors = fn => async (req, res) => {
   return await fn(req, res);
 };
 
-// Handler to process Google OAuth callback
-const handler = (req, res) => {
-  passport.authenticate("google", { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return res.status(401).json({ message: "Authentication failed" });
+// Function to process Google OAuth callback manually
+const handler = async (req, res) => {
+  try {
+    // Extract authorization code from query parameters
+    const { code } = req.query;
+    if (!code) {
+      return res.status(400).json({ message: "Missing authorization code" });
     }
 
-    const payload = {
+    // Exchange authorization code for access token using Google's API
+    const { OAuth2Client } = require("google-auth-library");
+    const client = new OAuth2Client(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.CALLBACK_URL);
+
+    const { tokens } = await client.getToken(code); // Fetch tokens (including access token) from Google
+    client.setCredentials(tokens);
+
+    // Get user info from Google using the access token
+    const ticket = await client.verifyIdToken({
+      idToken: tokens.id_token,
+      audience: process.env.CLIENT_ID
+    });
+
+    const payload = ticket.getPayload();
+    const googleId = payload['sub'];
+
+    // Find or create user in the database
+    const user = await userService.findOrCreate({
+      googleId: googleId,
+      username: payload.email,
+      name: payload.name
+    });
+
+    // Create a JWT token for the authenticated user
+    const jwtPayload = {
       _id: user._id,
       username: user.username,
       name: user.name,
@@ -45,8 +68,7 @@ const handler = (req, res) => {
       lastSearches: user.lastSearches || []
     };
 
-    // Generate a JWT token for the authenticated user
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "24h" });
+    const token = jwt.sign(jwtPayload, process.env.JWT_SECRET, { expiresIn: "24h" });
 
     // Send the token back to the frontend using window.postMessage
     const htmlResponse = `
@@ -57,7 +79,11 @@ const handler = (req, res) => {
     `;
 
     res.send(htmlResponse);
-  })(req, res);
+
+  } catch (error) {
+    console.error("Google OAuth callback error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
 module.exports = allowCors(handler);

@@ -1,41 +1,5 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const userService = require("../../user-service");
-
-// Initialize the Google OAuth strategy
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "https://backend-register-online-shop.vercel.app/auth/google/callback" // Use correct callback URL
-    },
-    async function (accessToken, refreshToken, profile, done) {
-      try {
-        // Find or create the user in your database
-        const user = await userService.findOrCreate({
-          googleId: profile.id,
-          username: profile.emails[0].value,
-          name: profile.displayName
-        });
-
-        const payload = {
-          _id: user._id,
-          username: user.username,
-          name: user.name,
-          lastVisitedProducts: user.lastVisitedProducts || [],
-          popularProducts: user.popularProducts || [],
-          shoppingCart: user.shoppingCart || [],
-          lastSearches: user.lastSearches || []
-        };
-
-        done(null, payload);
-      } catch (error) {
-        done(error, null);
-      }
-    }
-  )
-);
 
 // Middleware for handling CORS
 const allowCors = fn => async (req, res) => {
@@ -45,9 +9,9 @@ const allowCors = fn => async (req, res) => {
     'http://localhost:3000'
   ];
 
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
+//   if (allowedOrigins.includes(origin)) {
+//     res.setHeader('Access-Control-Allow-Origin', origin);
+//   }
 
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -61,12 +25,27 @@ const allowCors = fn => async (req, res) => {
   return await fn(req, res);
 };
 
-// Handler to start Google OAuth manually
+// Initialize the Google OAuth strategy
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
+      callbackURL: "https://backend-register-online-shop.vercel.app/auth/google/callback"
+    },
+    (accessToken, refreshToken, profile, done) => {
+      // No need to handle anything here; callback.js will handle the user logic.
+      done(null, profile);
+    }
+  )
+);
+
+// Handler to start Google OAuth process
 const handler = (req, res) => {
   passport.authenticate("google", {
-    scope: ["profile", "email"]
-  })(req, res); // Call passport.authenticate manually without next()
+    scope: ["profile", "email"],
+  })(req, res);
 };
 
-// Export with CORS support
+// Export the handler with CORS support
 module.exports = allowCors(handler);
