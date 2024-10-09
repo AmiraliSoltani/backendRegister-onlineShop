@@ -7,10 +7,13 @@ async function parseBody(req) {
   for await (const chunk of req) {
     body += chunk;
   }
-  return JSON.parse(body);
+  
+  try {
+    return JSON.parse(body);
+  } catch (error) {
+    throw new Error('Invalid JSON input');
+  }
 }
-
-console.log("logggggggggggggggggggg");
 
 // Middleware for handling CORS
 const allowCors = fn => async (req, res) => {
@@ -24,8 +27,7 @@ const allowCors = fn => async (req, res) => {
 
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
-  }
- else {
+  } else {
     res.setHeader('Access-Control-Allow-Origin', origin); // Allow the origin for any other cases (optional)
   }
 
@@ -52,33 +54,37 @@ const verifyToken = (token) => {
 
 // Last Searches Handler
 const handler = async (req, res) => {
-    const body = await parseBody(req);
-    const authHeader = req.headers.authorization;
-    await userService.connectMongo();
-    
-    if (!authHeader || !authHeader.startsWith('JWT ')) {
-        return res.status(401).json({ message: 'Missing or invalid token' });
-    }
-    
-    const token = authHeader.split(' ')[1];
-    const decoded = verifyToken(token);
-    console.log("decoded",decoded);
-    
-    if (!decoded) {
-        return res.status(401).json({ message: 'Invalid token' });
-    }
-    const userId = decoded._id;
+  await userService.connectMongo();
+  
+  const authHeader = req.headers.authorization;
+  
+  if (!authHeader || !authHeader.startsWith('JWT ')) {
+    return res.status(401).json({ message: 'Missing or invalid token' });
+  }
+  
+  const token = authHeader.split(' ')[1];
+  const decoded = verifyToken(token);
 
-    if (req.method === 'PUT') {
+  if (!decoded) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+
+  const userId = decoded._id;
+
+  // Handle PUT requests
+  if (req.method === 'PUT') {
     try {
+      const body = await parseBody(req);
+
       // Call user service to add the search object
-      const updatedSearches = await userService.addLastSearch(decoded._id, body);
+      const updatedSearches = await userService.addLastSearch(userId, body);
       res.status(200).json(updatedSearches);
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      res.status(400).json({ error: err.message });
     }
-  } 
- else if (req.method === 'GET') {
+
+  // Handle GET requests
+  } else if (req.method === 'GET') {
     try {
       // Call user service to get last searches
       const lastSearches = await userService.getLastSearches(userId);
@@ -87,7 +93,7 @@ const handler = async (req, res) => {
       res.status(500).json({ error: err.message });
     }
 
-  // DELETE: Clear all last searches for the authenticated user
+  // Handle DELETE requests
   } else if (req.method === 'DELETE') {
     try {
       // Call user service to clear last searches
@@ -97,9 +103,11 @@ const handler = async (req, res) => {
       res.status(500).json({ error: err.message });
     }
 
+  // If method is not allowed
   } else {
     res.status(405).json({ message: 'Method not allowed' });
   }
 };
 
+// Export the handler function with CORS support
 module.exports = allowCors(handler);
