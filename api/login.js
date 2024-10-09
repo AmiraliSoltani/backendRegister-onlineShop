@@ -47,6 +47,8 @@ const handler = async (req, res) => {
     console.log("Request Body:", body);
 
     try {
+        await userService.connectMongo();
+
         userService
         .checkUser(body)
         .then((user) => {
