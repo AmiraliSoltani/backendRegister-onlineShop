@@ -3,6 +3,25 @@ const bcrypt = require("bcryptjs");
 
 let mongoDBConnectionString = process.env.MONGODB_URI;
 
+
+const mongoose = require("mongoose");
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("MongoDB connected successfully");
+  } catch (error) {
+    console.error("MongoDB connection failed:", error.message);
+    throw new Error("Database connection failed");
+  }
+};
+
+module.exports = connectDB;
+
+
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
@@ -64,6 +83,33 @@ module.exports.connect = function () {
       User = db.model("users", userSchema);
       resolve();
     });
+  });
+};
+
+
+let isConnected = false;
+
+module.exports.connectMongo = function () {
+  return new Promise(function (resolve, reject) {
+    // Check if we're already connected
+    if (isConnected) {
+      resolve();
+      return;
+    }
+
+    // Connect using the mongoose.connect method
+    mongoose
+      .connect(mongoDBConnectionString, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      })
+      .then(() => {
+        isConnected = true; // Set the connection state to true
+        resolve();
+      })
+      .catch((err) => {
+        reject(err);
+      });
   });
 };
 
