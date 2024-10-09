@@ -24,6 +24,10 @@
       {
         "src": "/api/lastVisited",
         "dest": "/api/lastVisited.js"
+      },
+      {
+        "src": "/api/replaceLastVisited",
+        "dest": "/api/replaceLastVisited.js"
       }
     ],
     "builds": [
