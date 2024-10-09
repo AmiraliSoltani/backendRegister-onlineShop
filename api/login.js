@@ -41,6 +41,8 @@ const allowCors = fn => async (req, res) => {
 // Register Handler
 const handler = async (req, res) => {
   if (req.method === 'POST') {
+    console.log("logggg222222222222222222222222222");
+
     const body = await parseBody(req);
     console.log("Request Body:", body);
 
