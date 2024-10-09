@@ -8,6 +8,10 @@
       {
         "src": "/api/login",
         "dest": "/api/login.js"
+      },
+      {
+        "src": "/api/lastSearches.js",
+        "dest": "/api/lastSearches.js"
       }
     ],
     "builds": [
