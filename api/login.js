@@ -68,7 +68,7 @@ const handler = async (req, res) => {
           res.json({ message: "login successful", token: token, user: user });
         })
         .catch((msg) => {
-          console.log("byeeeeeee");
+          console.log("byeeeeeee",msg);
     
           res.status(422).json({ message: msg });
         });
