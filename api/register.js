@@ -31,32 +31,33 @@ const allowCors = fn => async (req, res) => {
 // Register Handler
 const handler = async (req, res) => {
   if (req.method === 'POST') {
-    res.status(200).json({ message: 'Simple response, no DB interaction' });
 
-    // try {
-    //   // Replace with your actual registration logic
-    //   const { username, password, name, lastName } = req.body;
+    try {
+      // Replace with your actual registration logic
+      await userService.connectMongo()
+
+      const { username, password, name, lastName } = req.body;
       
-    //   // Mock service call
-    //   const user = await userService.registerUser({ username, password, name, lastName });
+      // Mock service call
+      const user = await userService.registerUser({ username, password, name, lastName });
 
-    //   let payload = {
-    //     _id: user._id,
-    //     username: user.username,
-    //     name: user.name,
-    //     lastName: user.lastName,
-    //     lastVisitedProducts: [],
-    //     popularProducts: [],
-    //     shoppingCart: [],
-    //     lastSearches: []
-    //   };
+      let payload = {
+        _id: user._id,
+        username: user.username,
+        name: user.name,
+        lastName: user.lastName,
+        lastVisitedProducts: [],
+        popularProducts: [],
+        shoppingCart: [],
+        lastSearches: []
+      };
 
-    //   let token = jwt.sign(payload, process.env.JWT_SECRET);
+      let token = jwt.sign(payload, process.env.JWT_SECRET);
 
-    //   res.status(200).json({ message: 'Registration successful', token });
-    // } catch (err) {
-    //   res.status(400).json({ error: err.message });
-    // }
+      res.status(200).json({ message: 'Registration successful', token });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
   } else {
     res.status(405).json({ message: 'Method not allowed' });
   }
