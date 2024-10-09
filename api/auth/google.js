@@ -1,4 +1,3 @@
-// api/auth/google.js
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const userService = require("../../user-service");
@@ -9,7 +8,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "https://backend-register-online-shop.vercel.app/auth/google/callback"
+      callbackURL: "https://backend-register-online-shop.vercel.app/auth/google/callback" // Use correct callback URL
     },
     async function (accessToken, refreshToken, profile, done) {
       try {
@@ -27,7 +26,7 @@ passport.use(
           lastVisitedProducts: user.lastVisitedProducts || [],
           popularProducts: user.popularProducts || [],
           shoppingCart: user.shoppingCart || [],
-          lastSearches:user.lastSearches || []
+          lastSearches: user.lastSearches || []
         };
 
         done(null, payload);
@@ -46,11 +45,10 @@ const allowCors = fn => async (req, res) => {
     'http://localhost:3000'
   ];
 
-//   if (origin && allowedOrigins.includes(origin)) {
-//     res.setHeader('Access-Control-Allow-Origin', origin);
-//   } else {
-//     res.setHeader('Access-Control-Allow-Origin', 'https://default-origin-url.com'); // Provide a default or fallback origin
-//   }
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
@@ -63,10 +61,12 @@ const allowCors = fn => async (req, res) => {
   return await fn(req, res);
 };
 
-// Handler to start Google OAuth
-const handler = passport.authenticate("google", {
-  scope: ["profile", "email"],
-});
+// Handler to start Google OAuth manually
+const handler = (req, res) => {
+  passport.authenticate("google", {
+    scope: ["profile", "email"]
+  })(req, res); // Call passport.authenticate manually without next()
+};
 
 // Export with CORS support
 module.exports = allowCors(handler);
