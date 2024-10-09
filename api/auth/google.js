@@ -9,7 +9,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: process.env.CALLBACK_URL || "https://your-vercel-app-url.vercel.app/auth/google/callback"
+      callbackURL: "https://backend-register-online-shop.vercel.app/auth/google/callback"
     },
     async function (accessToken, refreshToken, profile, done) {
       try {
