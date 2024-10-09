@@ -27,6 +27,8 @@ const allowCors = fn => async (req, res) => {
 
 // Function to process Google OAuth callback manually
 const handler = async (req, res) => {
+    await userService.connectMongo();
+
   try {
     // Extract authorization code from query parameters
     const { code } = req.query;
