@@ -36,6 +36,14 @@
       {
         "source": "/api/favourite/:id",
         "destination": "/api/favourite/[id].js"
+      },
+      {
+        "source": "/auth/google/callback",
+        "destination": "/api/auth/callback/callback.js"
+      },
+      {
+        "source": "/auth/google",
+        "destination": "/api/auth/google.js"
       }
     ]
   }
