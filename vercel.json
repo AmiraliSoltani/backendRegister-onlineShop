@@ -16,6 +16,10 @@
       {
         "src": "/api/replaceLastSearches",
         "dest": "/api/replaceLastSearches.js"
+      },
+      {
+        "src": "/api/shoppingCard",
+        "dest": "/api/shoppingCard.js"
       }
     ],
     "builds": [
