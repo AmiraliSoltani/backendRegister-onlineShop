@@ -28,6 +28,10 @@
       {
         "src": "/api/replaceLastVisited",
         "dest": "/api/replaceLastVisited.js"
+      },
+      {
+        "src": "/api/favourites",
+        "dest": "/api/favourites.js"
       }
     ],
     "rewrites": [
