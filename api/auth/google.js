@@ -46,12 +46,11 @@ const allowCors = fn => async (req, res) => {
     'http://localhost:3000'
   ];
 
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  } else {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-
+//   if (origin && allowedOrigins.includes(origin)) {
+//     res.setHeader('Access-Control-Allow-Origin', origin);
+//   } else {
+//     res.setHeader('Access-Control-Allow-Origin', 'https://default-origin-url.com'); // Provide a default or fallback origin
+//   }
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
