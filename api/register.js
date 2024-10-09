@@ -1,6 +1,14 @@
 const jwt = require("jsonwebtoken");
-
 const userService = require("../user-service");
+
+// Helper to parse JSON body
+async function parseBody(req) {
+  let body = '';
+  for await (const chunk of req) {
+    body += chunk;
+  }
+  return JSON.parse(body);
+}
 
 const allowCors = fn => async (req, res) => {
   const origin = req.headers.origin;
@@ -31,16 +39,24 @@ const allowCors = fn => async (req, res) => {
 // Register Handler
 const handler = async (req, res) => {
   if (req.method === 'POST') {
-
     try {
-      // Replace with your actual registration logic
-      await userService.connectMongo()
+      // Parse request body
+      const body = await parseBody(req);
 
-      const { username, password, name, lastName } = req.body;
-      
-      // Mock service call
+      // Extract form data
+      const { username, password, name, lastName } = body;
+
+      if (!username || !password || !name || !lastName) {
+        return res.status(400).json({ message: 'All fields are required' });
+      }
+
+      // Connect to MongoDB
+      await userService.connectMongo();
+
+      // Register the user
       const user = await userService.registerUser({ username, password, name, lastName });
 
+      // Create JWT payload
       let payload = {
         _id: user._id,
         username: user.username,
@@ -52,10 +68,12 @@ const handler = async (req, res) => {
         lastSearches: []
       };
 
+      // Sign JWT token
       let token = jwt.sign(payload, process.env.JWT_SECRET);
 
       res.status(200).json({ message: 'Registration successful', token });
     } catch (err) {
+      console.error("Error during registration:", err);
       res.status(400).json({ error: err.message });
     }
   } else {
@@ -64,7 +82,6 @@ const handler = async (req, res) => {
 };
 
 module.exports = allowCors(handler);
-
 
 
 // const allowCors = fn => async (req, res) => {
