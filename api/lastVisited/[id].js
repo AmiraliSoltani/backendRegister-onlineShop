@@ -71,7 +71,9 @@ const handler = async (req, res) => {
 
   const userId = decoded._id;
   const productId = req.query.id; // Extract dynamic ID from the URL
-  
+  console.log("userId",userId)
+  console.log("productId",productId)
+
   // Handle PUT requests to add last visited product
   if (req.method === 'PUT') {
     try {
