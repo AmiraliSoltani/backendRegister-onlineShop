@@ -32,6 +32,10 @@
       {
         "source": "/api/lastVisited/:id",
         "destination": "/api/lastVisited/[id].js"
+      },
+      {
+        "source": "/api/favourite/:id",
+        "destination": "/api/favourite/[id].js"
       }
     ]
   }
