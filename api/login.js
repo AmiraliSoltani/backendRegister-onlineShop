@@ -67,7 +67,7 @@ const handler = async (req, res) => {
             lastSearches: user.lastSearches, // Include lastSearches here
           };
     
-          let token = jwt.sign(payload, jwtOptions.secretOrKey);
+          let token = jwt.sign(payload, process.env.JWT_SECRET);
     
           res.json({ message: "login successful", token: token, user: user });
         })
