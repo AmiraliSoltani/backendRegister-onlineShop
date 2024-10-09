@@ -10,7 +10,7 @@
         "dest": "/api/login.js"
       },
       {
-        "src": "/api/lastSearches.js",
+        "src": "/api/lastSearches",
         "dest": "/api/lastSearches.js"
       }
     ],

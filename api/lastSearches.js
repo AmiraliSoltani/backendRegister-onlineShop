@@ -10,6 +10,8 @@ async function parseBody(req) {
   return JSON.parse(body);
 }
 
+console.log("logggggggggggggggggggg");
+
 // Middleware for handling CORS
 const allowCors = fn => async (req, res) => {
   const origin = req.headers.origin;
