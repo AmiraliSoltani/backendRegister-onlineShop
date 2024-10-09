@@ -9,10 +9,7 @@ async function parseBody(req) {
   }
   return JSON.parse(body);
 }
-let jwtOptions = {};
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme("jwt");
-jwtOptions.secretOrKey = process.env.JWT_SECRET;
-jwtOptions.expiresIn = "24";
+
 
 const allowCors = fn => async (req, res) => {
     console.log("logggggggggggggggggggg");
