@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const userService = require("../user-service");
+const userService = require("../../user-service");
 
 // Helper to parse JSON body
 async function parseBody(req) {
