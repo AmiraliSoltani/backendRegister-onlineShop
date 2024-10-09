@@ -12,6 +12,10 @@
       {
         "src": "/api/lastSearches",
         "dest": "/api/lastSearches.js"
+      },
+      {
+        "src": "/api/api/replaceLastSearches",
+        "dest": "/api/api/replaceLastSearches.js"
       }
     ],
     "builds": [
