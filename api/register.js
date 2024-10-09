@@ -42,6 +42,8 @@ const handler = async (req, res) => {
     try {
       // Parse request body
       const body = await parseBody(req);
+console.log("Request Body:", body);
+
 
       // Extract form data
       const { username, password, name, lastName } = body;
