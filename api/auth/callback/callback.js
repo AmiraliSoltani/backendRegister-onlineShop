@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const userService = require("../../user-service");
+const userService = require("../../../user-service");
 
 // Middleware for handling CORS
 const allowCors = fn => async (req, res) => {
