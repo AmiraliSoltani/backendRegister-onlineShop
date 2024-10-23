@@ -22,8 +22,8 @@ module.exports = connectDB;
 
 
 const userSchema = new mongoose.Schema({
-  username: String,
-  password: String,
+  username: { type: String, unique: true },
+    password: String,
   name: String,
   lastName: String,
   googleId: String, // Used for Google OAuth sign-in
