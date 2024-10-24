@@ -76,7 +76,7 @@ console.log("Request Body:", body);
       res.status(200).json({ message: 'Registration successful', token });
     } catch (err) {
       console.error("Error during registration:", err);
-      res.status(400).json({ error: err.message });
+      res.status(400).json({ error: err });
     }
   } else {
     res.status(405).json({ message: 'Method not allowed' });
