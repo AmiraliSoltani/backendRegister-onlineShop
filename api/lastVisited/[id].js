@@ -86,7 +86,7 @@ const handler = async (req, res) => {
       const updatedVisited = await userService.addLastVisited(userId, productId);
       res.status(200).json(updatedVisited);
     } catch (err) {
-      console.log("heree",err)
+      console.log("heree",err,"productId",productId)
       res.status(400).json({ error: err.message });
     }
 
